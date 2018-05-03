@@ -49,11 +49,11 @@ namespace linalg
 	{
 		double norm = 0;
 
-		for (int j = 0; j < n; ++j)
+		for (int i = 0; i < n; ++i)
 		{
 			double current = 0;
 
-			for (int i = 0; i < n; ++i)
+			for (int j = 0; j < n; ++j)
 				current += fabs(A[i][j]);
 
 			if (current > norm)
@@ -101,17 +101,6 @@ namespace linalg
 	}
 
 
-	void swap_columns(size_t i, size_t j, double** A, size_t n)
-	{
-		for (int k = 0; k < n; ++k)
-		{
-			double tmp = A[k][i];
-			A[k][i] = A[k][j];
-			A[k][j] = tmp;
-		}
-	}
-
-
 	void print_matrix(double** A, size_t n)
 	{
 		for (int i = 0; i < n; ++i)
@@ -136,12 +125,9 @@ namespace linalg
 
 	void transpose_lines(double** A, size_t n, size_t i, size_t j)
 	{
-		for (int k = 0; k < n; ++k)
-		{
-			double tmp = A[i][k];
-			A[i][k] = A[j][k];
-			A[j][k] = tmp;
-		}
+		double* pointer = A[i];
+		A[i] = A[j];
+		A[j] = pointer;
 	}
 
 
@@ -200,12 +186,10 @@ namespace linalg
 	}
 
 
-	double** gauss_invert(double** M, size_t n)
+	double** gauss_invert(double** A, size_t n)
 	{
-		double** A = copy_matrix(M, n);
 		double** E = create_unit_matrix(n);
 		int* transposes = new int[n];
-
 
 		for (int i = 0; i < n; ++i)
 		{
@@ -213,13 +197,11 @@ namespace linalg
 			int tmp_j = i;
 
 			for (int j = 0; j < n; ++j)
-			{
 				if (fabs(A[i][j]) > fabs(k))
 				{
 					k = A[i][j];
 					tmp_j = j;
 				}
-			}
 
 			if (i != tmp_j)
 			{
@@ -250,9 +232,7 @@ namespace linalg
 		double** A_triangular_inv = invert_upper_triangular(A, n);
 
 		for (int i = n - 1; i > -1; --i)
-		{
 			transpose_lines(A_triangular_inv, n, i, transposes[i]);
-		}
 
 		return mult_m(A_triangular_inv, E, n);
 	}
