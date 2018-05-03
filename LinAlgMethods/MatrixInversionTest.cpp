@@ -37,7 +37,6 @@ int main()
 	double alpha = 1;
 	double beta = 100;
 
-	//printing data
-
+	
 	return 0;
 }
