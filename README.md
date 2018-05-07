@@ -1,2 +1,2 @@
 # NumericMethodsCpp
-Quantitative methods of linear algebra. My university tasks.
+Quantitative methods of linear algebra etc. My university tasks.

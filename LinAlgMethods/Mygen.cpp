@@ -1,9 +1,5 @@
-/*
-	JUST DON'T TOUCH.
-	Everything works fine.
-	Use function wrappers from MatrixInversionTest.cpp file.
-*/
-
+// DO NOT TOUCH ANYTHING HERE.
+//
 
 
 #include <iostream>
@@ -11,11 +7,55 @@ using namespace std;
 
 #include <math.h>
 
+#define N 100
+#define ALPHA 1.e-3
+#define BETA 1.
 
+/*//*/
 void mygen ( double **a, double **a_inv, int n, double alpha, double beta, int sign_law, int lambda_law, int variant, int schema );
 void Q_matrix ( double **Q, int n, int schema );
 void matr_mul( double **a,  double **b,  double **c, int n );
 double matr_inf_norm ( double **a, int n );
+/*//*/
+
+
+/*int _tmain(int argc, _TCHAR* argv[])
+{
+	int i,j;
+
+	int n = N;
+	double **a = new double* [n];
+	for( i = 0; i < n; i++ )
+		a[i] = new double [n];
+
+	double **a_inv = new double* [n];
+	for( i = 0; i < n; i++ )
+		a_inv[i] = new double [n];
+
+	double alpha = ALPHA;
+	double beta = BETA;
+
+//	mygen ( a, a_inv, n, alpha, beta, 1, 2, 0, 1 ); // симметричная
+//	mygen ( a, a_inv, n, alpha, beta, 1, 2, 1, 1 ); //проостой структуры
+	mygen ( a, a_inv, n, alpha, beta, 0, 0, 2, 1 ); //жорданова клетка
+
+/*	cout << "a:" << endl;	
+	for( i = 0; i < n; i++ )
+	{
+		for( j = 0; j < n; j++ ) cout << " " << a[i][j];
+		cout << endl;
+	}
+	cout << "a_inv:" << endl;	
+	for( i = 0; i < n; i++ )
+	{
+		for( j = 0; j < n; j++ ) cout << " " << a_inv[i][j];
+		cout << endl;
+	}
+
+*//*
+	char ch;  cin >> ch;
+//	return 0;
+}*/
 
 
 void mygen ( double **a, double **a_inv, int n, double alpha, double beta, int sign_law, int lambda_law, int variant, int schema )
