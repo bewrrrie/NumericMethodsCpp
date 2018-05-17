@@ -37,9 +37,7 @@ namespace linalg
 		double** E = create_zero_matrix(n);
 
 		for (int i = 0; i < n; ++i)
-		{
 			E[i][i] = 1;
-		}
 
 		return E;
 	}
@@ -136,9 +134,7 @@ namespace linalg
 		double** A_inv = create_zero_matrix(n);
 
 		for (int i = 0; i < n; ++i)
-		{
 			A_inv[i][i] = 1 / A[i][i];
-		}
 
 		for (int i = 1; i < n; ++i)
 		{
@@ -147,9 +143,7 @@ namespace linalg
 				double summ = 0;
 
 				for (int k = 0; k < i; ++k)
-				{
 					summ -= A_inv[k][j] * A[i][k];
-				}
 
 				A_inv[i][j] = summ / A[i][i] ;
 			}
@@ -163,9 +157,7 @@ namespace linalg
 		double** A_inv = create_zero_matrix(n);
 
 		for (int i = 0; i < n; ++i)
-		{
 			A_inv[i][i] = 1 / A[i][i];
-		}
 
 		for (int i = n - 2; i > -1; --i)
 		{
@@ -174,9 +166,7 @@ namespace linalg
 				double summ = 0;
 
 				for (int k = i + 1; k < n; ++k)
-				{
 					summ -= A_inv[k][j] * A[i][k];
-				}
 
 				A_inv[i][j] = summ / A[i][i] ;
 			}
@@ -204,9 +194,7 @@ namespace linalg
 				}
 
 			if (i != tmp_j)
-			{
 				transpose_columns(A, n, i, tmp_j);
-			}
 
 			transposes[i] = tmp_j;
 
@@ -235,5 +223,68 @@ namespace linalg
 			transpose_lines(A_triangular_inv, n, i, transposes[i]);
 
 		return mult_m(A_triangular_inv, E, n);
+	}
+
+
+	void conjugate_gradient_method(
+		double** A, double* b,
+		double* x, double stopping_criteria_epsilon,
+		size_t n
+	)
+	{
+		double* r = new double[n];
+		double* z = new double[n];
+		double b_norm = 0;
+
+		for (int i = 0; i < n; ++i)
+		{
+			r[i] = b[i];
+
+			for (int j = 0; j < n; ++j)
+				r[i] -= A[i][j] * x[j];
+
+			z[i] = r[i];
+			b_norm += b[i] * b[i];
+		}
+
+		double* Az = new double[n];
+		double alpha, beta, r_sqr, div;
+		double residual = stopping_criteria_epsilon + 1;
+
+		while (residual > stopping_criteria_epsilon)
+		{
+			r_sqr = 0;
+			div = 0;
+
+			for (int i = 0; i < n; ++i)
+			{
+				Az[i] = 0;
+				r_sqr += r[i] * r[i];
+
+				for (int j = 0; j < n; ++j)
+					Az[i] += A[i][j] * z[j];
+
+				div += Az[i] * z[i];
+			}
+
+			residual = r_sqr / b_norm;
+			if (residual < stopping_criteria_epsilon)
+				break;
+
+			alpha = r_sqr / div;
+			beta = 0;
+
+			for (int i = 0; i < n; ++i)
+			{
+				x[i] += alpha * z[i];
+				r[i] -= alpha * Az[i];
+				beta += r[i] * r[i];
+			}
+
+			beta /= r_sqr;
+
+			for (int i = 0; i < n; ++i)
+				z[i] = r[i] + beta * z[i];
+		}
 	}
 }

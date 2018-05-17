@@ -1,5 +1,5 @@
 #include "LinAlgLib.cpp"
-#include "Mygen.cpp"// <<---- I don't know what in this file but it works nice.
+#include "Mygen.cpp"//<<- <<- I don't know what in this file but it works nice.
 //                            Just use wrapper functions to generate matrices.
 #include <iostream>
 #include <cmath>
@@ -65,8 +65,8 @@ int main()
 	residual = subtract_m( mult_m(A_copy, A_inv_star, N), E, N );
 
 	cout << endl << "abs.error = " << l_inf_mnorm(error, N) << endl;
-	cout << "abs.residual = " << l_inf_mnorm(residual, N) << endl;
 	cout << "rel.error = " << l_inf_mnorm(error, N) / l_inf_mnorm(A_inv, N) << endl;
+	cout << "abs.residual = " << l_inf_mnorm(residual, N) << endl;
 	cout << "--------------------------------" << endl;
 
 	return 0;
